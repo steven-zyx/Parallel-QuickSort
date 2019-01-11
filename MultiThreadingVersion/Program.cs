@@ -11,10 +11,21 @@ namespace MultiThreadingVersion
         {
             int[] array = Relevant.GenerateRandomIntergers(10_000, 0, 10000);
             array[array.Length - 1] = int.MaxValue;
-            //Sort(array, 0, array.Length - 1);
+            Task mainTask = new Task(() => Sort(array, 0, array.Length - 1));
+            mainTask.Start();
+            mainTask.Wait();
             bool result = Relevant.VerifySequence(array);
             Console.WriteLine(result);
             Console.ReadKey();
+        }
+
+        static void Sort(int[] array, int lo, int hi)
+        {
+            if (hi <= lo) return;
+            int middleEleIndex = Partition(array, lo, hi);
+
+            new Task(() => Sort(array, lo, middleEleIndex - 1), TaskCreationOptions.AttachedToParent).Start();
+            new Task(() => Sort(array, middleEleIndex + 1, hi), TaskCreationOptions.AttachedToParent).Start();
         }
 
 
