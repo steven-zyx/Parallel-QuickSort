@@ -56,12 +56,9 @@ namespace SingleThreadingVersion
 
         static void Swap(int[] array, int e1, int e2)
         {
-            if (e1 != e2)
-            {
-                array[e1] = array[e1] + array[e2];
-                array[e2] = array[e1] - array[e2];
-                array[e1] = array[e1] - array[e2];
-            }
+            var4Swap = array[e1];
+            array[e1] = array[e2];
+            array[e2] = var4Swap;
         }
 
     }
