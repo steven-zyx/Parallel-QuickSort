@@ -5,4 +5,8 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RelevantFunction\RelevantFunction.csproj" />
+  </ItemGroup>
+
 </Project>
