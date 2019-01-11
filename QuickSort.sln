@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiThreadingVersion", "Mu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RelevantFunction", "RelevantFunction\RelevantFunction.csproj", "{9AB06987-F2C5-42DC-A040-E0476DA07C69}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "Testing\Testing.csproj", "{E7C6C135-82E2-4A61-BE17-3B10CFFF155B}"
+EndProject
 Global
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true
@@ -30,6 +32,10 @@ Global
 		{9AB06987-F2C5-42DC-A040-E0476DA07C69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AB06987-F2C5-42DC-A040-E0476DA07C69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AB06987-F2C5-42DC-A040-E0476DA07C69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7C6C135-82E2-4A61-BE17-3B10CFFF155B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7C6C135-82E2-4A61-BE17-3B10CFFF155B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7C6C135-82E2-4A61-BE17-3B10CFFF155B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7C6C135-82E2-4A61-BE17-3B10CFFF155B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

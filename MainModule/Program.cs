@@ -1,26 +1,43 @@
 ﻿using System;
 using RelevantFunction;
+using System.Diagnostics;
 
 namespace SingleThreadingVersion
 {
-    class Program
+    public class Program
     {
         static int var4Swap;
 
         static void Main(string[] args)
         {
-            int[] array = Relevant.GenerateRandomIntergers(20_000_000, 0, 10000);
-            GetMaxValueThenPlaceToEnd(array);
+            //int[] array = Relevant.GenerateRandomIntergers(40_000_000, 0, 10000);
+            //GetMaxValueThenPlaceToEnd(array);
+            //Sort(array, 0, array.Length - 1);
+            //bool result = Relevant.VerifySequence(array);
+            //Console.WriteLine(result);
+            Testing();
+            Console.ReadKey();
+        }
+
+        public static void Testing()
+        {
+            int[] array = Relevant.GenerateRandomIntergers(10_000_000, 0, 1_000_000);
+            array[array.Length - 1] = int.MaxValue;
+
+            Stopwatch sw = new Stopwatch();
+            Console.WriteLine("SingleThreadingVersion:");
+            sw.Start();
             Sort(array, 0, array.Length - 1);
+            sw.Stop();
+            Console.WriteLine(sw.Elapsed);
             bool result = Relevant.VerifySequence(array);
             Console.WriteLine(result);
-            Console.ReadKey();
         }
 
         static void GetMaxValueThenPlaceToEnd(int[] array)
         {
             int maxEleIndex = 0;
-            for(int i = 0; i < array.Length; i++)
+            for (int i = 0; i < array.Length; i++)
             {
                 if (array[i] > array[maxEleIndex])
                     maxEleIndex = i;

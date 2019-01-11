@@ -7,7 +7,7 @@ namespace RelevantFunction
         // [min,max]
         public static int[] GenerateRandomIntergers(int count, int min, int max)
         {
-            Random rand = new Random();
+            Random rand = new Random(3);
             int[] array = new int[count];
             for (int i = 0; i < count; i++)
             {
