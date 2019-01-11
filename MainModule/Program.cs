@@ -9,7 +9,7 @@ namespace SingleThreadingVersion
 
         static void Main(string[] args)
         {
-            int[] array = Relevant.GenerateRandomIntergers(10_000, 0, 10000);
+            int[] array = Relevant.GenerateRandomIntergers(20_000_000, 0, 10000);
             GetMaxValueThenPlaceToEnd(array);
             Sort(array, 0, array.Length - 1);
             bool result = Relevant.VerifySequence(array);

@@ -5,11 +5,14 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SingleThreadingVersion", "MainModule\SingleThreadingVersion.csproj", "{66BAD8BA-DDA0-4EEE-B786-F8CE95BFD94E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiThreadingVersion", "MultiThreadingVersion\MultiThreadingVersion.csproj", "{C22A2216-6803-4281-8229-CA36290453C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiThreadingVersion", "MultiThreadingVersion\MultiThreadingVersion.csproj", "{C22A2216-6803-4281-8229-CA36290453C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelevantFunction", "RelevantFunction\RelevantFunction.csproj", "{9AB06987-F2C5-42DC-A040-E0476DA07C69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RelevantFunction", "RelevantFunction\RelevantFunction.csproj", "{9AB06987-F2C5-42DC-A040-E0476DA07C69}"
 EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
