@@ -23,8 +23,8 @@ namespace MultiThreadingVersion
             //bool result = Relevant.VerifySequence(array);
             //Console.WriteLine(result);
 
-            GetMaxValueThenPlaceToEnd(array);
-            //Testing();
+            //GetMaxValueThenPlaceToEnd(array);
+            Testing();
             Console.ReadKey();
         }
 
