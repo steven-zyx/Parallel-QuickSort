@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Non_ParallelVersion", "MainModule\Non_ParallelVersion.csproj", "{66BAD8BA-DDA0-4EEE-B786-F8CE95BFD94E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Non_ParallelVersion", "Non_parallelVersion\Non_ParallelVersion.csproj", "{66BAD8BA-DDA0-4EEE-B786-F8CE95BFD94E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParallelVersion", "MultiThreadingVersion\ParallelVersion.csproj", "{C22A2216-6803-4281-8229-CA36290453C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParallelVersion", "ParallelVersion\ParallelVersion.csproj", "{C22A2216-6803-4281-8229-CA36290453C1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RelevantFunction", "RelevantFunction\RelevantFunction.csproj", "{9AB06987-F2C5-42DC-A040-E0476DA07C69}"
 EndProject
