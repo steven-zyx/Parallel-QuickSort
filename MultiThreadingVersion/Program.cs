@@ -28,7 +28,7 @@ namespace MultiThreadingVersion
 
         public static void Testing()
         {
-            int[] array = Relevant.GenerateRandomIntergers(10_000_000, 0, 1_000_000);
+            int[] array = Relevant.GenerateRandomIntergers(300_000_000, 0, 1_000_000);
             array[array.Length - 1] = int.MaxValue;
 
             Stopwatch sw = new Stopwatch();
@@ -36,7 +36,7 @@ namespace MultiThreadingVersion
             sw.Start();
 
             Task mainTask = null;
-            mainTask = new Task(() => Sort(array, 0, array.Length - 1, mainTask));
+            mainTask = new Task(() => Sort_Continuation(array, 0, array.Length - 1, mainTask));
             mainTask.Start();
             while (true)
             {
@@ -46,6 +46,7 @@ namespace MultiThreadingVersion
                     break;
                 }
             }
+            //Sort_Parallel(array, 0, array.Length - 1);
 
             sw.Stop();
             Console.WriteLine(sw.Elapsed);
@@ -53,7 +54,7 @@ namespace MultiThreadingVersion
             Console.WriteLine(result);
         }
 
-        static void Sort(int[] array, int lo, int hi, Task t)
+        static void Sort_Continuation(int[] array, int lo, int hi, Task t)
         {
             if (hi <= lo)
             {
@@ -63,8 +64,22 @@ namespace MultiThreadingVersion
 
             Interlocked.Increment(ref partitionCount);
             int middleEleIndex = Partition(array, lo, hi);
-            t.ContinueWith((task) => Sort(array, lo, middleEleIndex - 1, task));
-            t.ContinueWith((task) => Sort(array, middleEleIndex + 1, hi, task));
+            t.ContinueWith((task) => Sort_Continuation(array, lo, middleEleIndex - 1, task));
+            Sort_Continuation(array, middleEleIndex + 1, hi, t);
+        }
+
+        static void Sort_Parallel(int[] array, int lo, int hi)
+        {
+            if (hi <= lo)
+            {
+                return;
+            }
+        
+            int middleEleIndex = Partition(array, lo, hi);
+        
+            Parallel.Invoke(
+                () => Sort_Parallel(array, lo, middleEleIndex - 1),
+                () => Sort_Parallel(array, middleEleIndex + 1, hi));
         }
 
         static int Partition(int[] array, int lo, int hi)

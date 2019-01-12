@@ -21,7 +21,7 @@ namespace SingleThreadingVersion
 
         public static void Testing()
         {
-            int[] array = Relevant.GenerateRandomIntergers(10_000_000, 0, 1_000_000);
+            int[] array = Relevant.GenerateRandomIntergers(300_000_000, 0, 1_000_000);
             array[array.Length - 1] = int.MaxValue;
 
             Stopwatch sw = new Stopwatch();
