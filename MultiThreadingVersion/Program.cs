@@ -3,6 +3,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Linq;
+using System.Collections.Concurrent;
 
 namespace MultiThreadingVersion
 {
@@ -13,7 +15,7 @@ namespace MultiThreadingVersion
 
         static void Main(string[] args)
         {
-            //int[] array = Relevant.GenerateRandomIntergers(40_000_000, 0, 10000);
+            int[] array = Relevant.GenerateRandomIntergers(1_000_000, 0, 10000);
             //array[array.Length - 1] = int.MaxValue;
             //
             //
@@ -21,20 +23,20 @@ namespace MultiThreadingVersion
             //bool result = Relevant.VerifySequence(array);
             //Console.WriteLine(result);
 
-
-            Testing();
+            GetMaxValueThenPlaceToEnd(array);
+            //Testing();
             Console.ReadKey();
         }
 
         public static void Testing()
         {
             int[] array = Relevant.GenerateRandomIntergers(300_000_000, 0, 1_000_000);
-            array[array.Length - 1] = int.MaxValue;
 
             Stopwatch sw = new Stopwatch();
             Console.WriteLine("MultiThreadingVersion:");
             sw.Start();
 
+            GetMaxValueThenPlaceToEnd(array);
             Task mainTask = null;
             mainTask = new Task(() => Sort_Continuation(array, 0, array.Length - 1, mainTask));
             mainTask.Start();
@@ -53,6 +55,45 @@ namespace MultiThreadingVersion
             bool result = Relevant.VerifySequence(array);
             Console.WriteLine(result);
         }
+
+
+        static ConcurrentDictionary<int, int> pair = new ConcurrentDictionary<int, int>();
+
+        //[lo,hi)
+        private static void GetMaxValueFromSubArray(int[] array, int lo, int hi)
+        {
+            int maxEleIndex = lo;
+            for (int i = lo; i < hi; i++)
+            {
+                if (array[i] > array[maxEleIndex])
+                    maxEleIndex = i;
+            }
+
+            bool result = pair.TryAdd(maxEleIndex, array[maxEleIndex]);
+            if (!result)
+            {
+                Console.WriteLine("Error");
+            }
+        }
+
+        private static void GetMaxValueThenPlaceToEnd(int[] array)
+        {
+            int pc = array.Length / 8;
+            Parallel.Invoke(
+                () => GetMaxValueFromSubArray(array, 0, pc),
+                () => GetMaxValueFromSubArray(array, pc, 2 * pc),
+                () => GetMaxValueFromSubArray(array, 2 * pc, 3 * pc),
+                () => GetMaxValueFromSubArray(array, 3 * pc, 4 * pc),
+                () => GetMaxValueFromSubArray(array, 4 * pc, 5 * pc),
+                () => GetMaxValueFromSubArray(array, 5 * pc, 6 * pc),
+                () => GetMaxValueFromSubArray(array, 6 * pc, 7 * pc),
+                () => GetMaxValueFromSubArray(array, 7 * pc, array.Length));
+
+            int maxEleNumber = pair.OrderByDescending(t => t.Value).First().Key;
+            Swap(array, maxEleNumber, array.Length - 1);
+        }
+
+
 
         static void Sort_Continuation(int[] array, int lo, int hi, Task t)
         {
@@ -74,9 +115,9 @@ namespace MultiThreadingVersion
             {
                 return;
             }
-        
+
             int middleEleIndex = Partition(array, lo, hi);
-        
+
             Parallel.Invoke(
                 () => Sort_Parallel(array, lo, middleEleIndex - 1),
                 () => Sort_Parallel(array, middleEleIndex + 1, hi));

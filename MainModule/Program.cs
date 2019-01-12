@@ -27,6 +27,7 @@ namespace SingleThreadingVersion
             Stopwatch sw = new Stopwatch();
             Console.WriteLine("SingleThreadingVersion:");
             sw.Start();
+            GetMaxValueThenPlaceToEnd(array);
             Sort(array, 0, array.Length - 1);
             sw.Stop();
             Console.WriteLine(sw.Elapsed);
@@ -34,7 +35,7 @@ namespace SingleThreadingVersion
             Console.WriteLine(result);
         }
 
-        static void GetMaxValueThenPlaceToEnd(int[] array)
+        private static void GetMaxValueThenPlaceToEnd(int[] array)
         {
             int maxEleIndex = 0;
             for (int i = 0; i < array.Length; i++)
