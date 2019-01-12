@@ -67,7 +67,6 @@ namespace ParallelVersion
             }
         }
 
-        //这里需要改成自动探测的模式
         private static void GetMaxValueThenPlaceToEnd(int[] array)
         {
             int pc = Environment.ProcessorCount;
