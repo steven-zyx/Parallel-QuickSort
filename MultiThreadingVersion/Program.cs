@@ -10,21 +10,13 @@ namespace MultiThreadingVersion
 {
     public class Program
     {
-        static int partitionCount = 0;
-        static int endCount = 0;
-        static int NewThreadBasis;
+        static int _partitionCounter = 0;
+        static int _finishCounter = 0;
+        static int _lengthRequireNewThread;
+        static ConcurrentDictionary<int, int> _pair4MaxValues = new ConcurrentDictionary<int, int>();
 
         static void Main(string[] args)
         {
-            //int[] array = Relevant.GenerateRandomIntergers(1_000_000, 0, 10000);
-            //array[array.Length - 1] = int.MaxValue;
-            //
-            //
-            //
-            //bool result = Relevant.VerifySequence(array);
-            //Console.WriteLine(result);
-
-            //GetMaxValueThenPlaceToEnd(array);
             Testing();
             Console.ReadKey();
         }
@@ -38,28 +30,24 @@ namespace MultiThreadingVersion
             sw.Start();
 
             GetMaxValueThenPlaceToEnd(array);
-            NewThreadBasis = array.Length / 256;
+            _lengthRequireNewThread = array.Length / 256;
             Task mainTask = null;
             mainTask = new Task(() => Sort_Continuation(array, 0, array.Length - 1, mainTask));
             mainTask.Start();
             while (true)
             {
                 Thread.Sleep(500);
-                if (partitionCount == endCount - 1)
+                if (_partitionCounter == _finishCounter - 1)
                 {
                     break;
                 }
             }
-            //Sort_Parallel(array, 0, array.Length - 1);
 
             sw.Stop();
             Console.WriteLine(sw.Elapsed);
             bool result = Relevant.VerifySequence(array);
             Console.WriteLine(result);
         }
-
-
-        static ConcurrentDictionary<int, int> pair = new ConcurrentDictionary<int, int>();
 
         //[lo,hi)
         private static void GetMaxValueFromSubArray(int[] array, int lo, int hi)
@@ -71,7 +59,7 @@ namespace MultiThreadingVersion
                     maxEleIndex = i;
             }
 
-            bool result = pair.TryAdd(maxEleIndex, array[maxEleIndex]);
+            bool result = _pair4MaxValues.TryAdd(maxEleIndex, array[maxEleIndex]);
             if (!result)
             {
                 Console.WriteLine("Error");
@@ -91,50 +79,48 @@ namespace MultiThreadingVersion
                 () => GetMaxValueFromSubArray(array, 6 * pc, 7 * pc),
                 () => GetMaxValueFromSubArray(array, 7 * pc, array.Length));
 
-            int maxEleNumber = pair.OrderByDescending(t => t.Value).First().Key;
-            Swap(array, maxEleNumber, array.Length - 1);
+            int maxEleIndex = _pair4MaxValues.OrderByDescending(t => t.Value).First().Key;
+            Swap(array, maxEleIndex, array.Length - 1);
         }
 
-
-
-        static void Sort_Continuation(int[] array, int lo, int hi, Task t)
+        private static void Sort_Continuation(int[] array, int lo, int hi, Task t)
         {
             if (hi <= lo)
             {
-                Interlocked.Increment(ref endCount);
+                Interlocked.Increment(ref _finishCounter);
                 return;
             }
 
-            Interlocked.Increment(ref partitionCount);
+            Interlocked.Increment(ref _partitionCounter);
             int middleEleIndex = Partition(array, lo, hi);
 
-            if (middleEleIndex - lo > NewThreadBasis)
+            if (middleEleIndex - lo > _lengthRequireNewThread)
                 t.ContinueWith((task) => Sort_Continuation(array, lo, middleEleIndex - 1, task));
             else
-                Sort_Single(array, lo, middleEleIndex - 1);
+                Sort_Recursion(array, lo, middleEleIndex - 1);
 
-            if (hi - middleEleIndex > NewThreadBasis)
+            if (hi - middleEleIndex > _lengthRequireNewThread)
                 t.ContinueWith((task) => Sort_Continuation(array, middleEleIndex + 1, hi, task));
             else
-                Sort_Single(array, middleEleIndex + 1, hi);
+                Sort_Recursion(array, middleEleIndex + 1, hi);
         }
 
-        static void Sort_Single(int[] array, int lo, int hi)
+        private static void Sort_Recursion(int[] array, int lo, int hi)
         {
             if (hi <= lo)
             {
-                Interlocked.Increment(ref endCount);
+                Interlocked.Increment(ref _finishCounter);
                 return;
             }
 
-            Interlocked.Increment(ref partitionCount);
+            Interlocked.Increment(ref _partitionCounter);
             int middleEleIndex = Partition(array, lo, hi);
 
-            Sort_Single(array, lo, middleEleIndex - 1);
-            Sort_Single(array, middleEleIndex + 1, hi);
+            Sort_Recursion(array, lo, middleEleIndex - 1);
+            Sort_Recursion(array, middleEleIndex + 1, hi);
         }
 
-        static int Partition(int[] array, int lo, int hi)
+        private static int Partition(int[] array, int lo, int hi)
         {
             int middleEle = array[lo];
             int i = lo;
@@ -151,7 +137,7 @@ namespace MultiThreadingVersion
             return j;
         }
 
-        static void Swap(int[] array, int e1, int e2)
+        private static void Swap(int[] array, int e1, int e2)
         {
             if (e1 != e2)
             {
