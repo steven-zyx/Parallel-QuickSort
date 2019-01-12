@@ -12,7 +12,7 @@ namespace ParallelVersion
     {
         private static int _partitionCounter = 0;
         private static int _finishCounter = 0;
-        private static int _lengthRequireNewThread;
+        private static int _lengthRequireNewThread; 
         private static ConcurrentDictionary<int, int> _pair4MaxValues = new ConcurrentDictionary<int, int>();
 
         static void Main(string[] args)
