@@ -1,5 +1,5 @@
-﻿using System;
-using RelevantFunction;
+﻿using RelevantFunction;
+using System;
 using System.Diagnostics;
 
 namespace Non_ParallelVersion
