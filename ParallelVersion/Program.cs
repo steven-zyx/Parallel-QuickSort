@@ -12,7 +12,7 @@ namespace ParallelVersion
     {
         private static int _partitionCounter = 0;
         private static int _finishCounter = 0;
-        private static int _lengthRequireNewThread; 
+        private static int _lengthRequireNewThread;
         private static ConcurrentDictionary<int, int> _pair4MaxValues = new ConcurrentDictionary<int, int>();
 
         static void Main(string[] args)
@@ -23,10 +23,11 @@ namespace ParallelVersion
 
         public static void Testing()
         {
+            Console.WriteLine("Generating Random Intergers...");
             int[] array = Relevant.GenerateRandomIntergers(300_000_000, 0, 1_000_000);
 
             Stopwatch sw = new Stopwatch();
-            Console.WriteLine("MultiThreadingVersion:");
+            Console.WriteLine("ParallelVersion start:");
             sw.Start();
 
             GetMaxValueThenPlaceToEnd(array);
@@ -44,9 +45,9 @@ namespace ParallelVersion
             }
 
             sw.Stop();
-            Console.WriteLine(sw.Elapsed);
+            Console.WriteLine($"Total second of Algorithm: {sw.Elapsed}");
             bool result = Relevant.VerifySequence(array);
-            Console.WriteLine(result);
+            Console.WriteLine($"Verification: {result}");
         }
 
         //[lo,hi)
@@ -69,17 +70,15 @@ namespace ParallelVersion
         //这里需要改成自动探测的模式
         private static void GetMaxValueThenPlaceToEnd(int[] array)
         {
-            int pc = array.Length / 8;
-            Parallel.Invoke(
-                () => GetMaxValueFromSubArray(array, 0, pc),
-                () => GetMaxValueFromSubArray(array, pc, 2 * pc),
-                () => GetMaxValueFromSubArray(array, 2 * pc, 3 * pc),
-                () => GetMaxValueFromSubArray(array, 3 * pc, 4 * pc),
-                () => GetMaxValueFromSubArray(array, 4 * pc, 5 * pc),
-                () => GetMaxValueFromSubArray(array, 5 * pc, 6 * pc),
-                () => GetMaxValueFromSubArray(array, 6 * pc, 7 * pc),
-                () => GetMaxValueFromSubArray(array, 7 * pc, array.Length));
-
+            int pc = Environment.ProcessorCount;
+            int partitionLength = array.Length / pc;
+            Action[] actionArray = new Action[pc];
+            for (int i = 0; i < pc; i++)
+            {
+                int j = i;
+                actionArray[i] = () => GetMaxValueFromSubArray(array, j * partitionLength, j == pc - 1 ? array.Length : (j + 1) * partitionLength);
+            }
+            Parallel.Invoke(actionArray);
             int maxEleIndex = _pair4MaxValues.OrderByDescending(t => t.Value).First().Key;
             Swap(array, maxEleIndex, array.Length - 1);
         }
@@ -137,6 +136,7 @@ namespace ParallelVersion
             Swap(array, lo, j);
             return j;
         }
+
 
         private static void Swap(int[] array, int e1, int e2)
         {
