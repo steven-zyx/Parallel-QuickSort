@@ -16,18 +16,20 @@ namespace Non_ParallelVersion
 
         public static void Testing()
         {
+
+            Console.WriteLine("Generating Random Intergers...");
             int[] array = Relevant.GenerateRandomIntergers(300_000_000, 0, 1_000_000);
             array[array.Length - 1] = int.MaxValue;
 
             Stopwatch sw = new Stopwatch();
-            Console.WriteLine("SingleThreadingVersion:");
+            Console.WriteLine("Non_ParallelVersion start:");
             sw.Start();
             GetMaxValueThenPlaceToEnd(array);
             Sort(array, 0, array.Length - 1);
             sw.Stop();
-            Console.WriteLine(sw.Elapsed);
+            Console.WriteLine($"Total second of Algorithm: {sw.Elapsed}");
             bool result = Relevant.VerifySequence(array);
-            Console.WriteLine(result);
+            Console.WriteLine($"Verification: {result}");
         }
 
         private static void GetMaxValueThenPlaceToEnd(int[] array)
