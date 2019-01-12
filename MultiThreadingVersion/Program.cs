@@ -16,7 +16,7 @@ namespace MultiThreadingVersion
 
         static void Main(string[] args)
         {
-            int[] array = Relevant.GenerateRandomIntergers(1_000_000, 0, 10000);
+            //int[] array = Relevant.GenerateRandomIntergers(1_000_000, 0, 10000);
             //array[array.Length - 1] = int.MaxValue;
             //
             //
