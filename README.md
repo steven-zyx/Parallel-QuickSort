@@ -1,5 +1,4 @@
 # Parallel-QuickSort
-Using C#, TPL. Shows both parallel and non-parallel version.<br/>
 I used a slightly optimized sequential version of quicksort as basis, then added parallel functionality to it. The sequential version is from: Algorithms 4th edition.<br/>
 After my experiments, the parallel version saves approximately 64% of the time compared with the sequential version, which is 9.2s compared with 25.6s and calculated by a CPU(E3-1230 v5) of 4 cores, 8 logical threads and 3.4GHz clocking rate.<br/>
 Technically, I used continuation, and only assigned continuation if the subarrays have large enough length, which is 1/256 of the whole array. So it won't generate too much tasks for the TPL to schedule but retained a fine-grained control of the threads.<br/>
