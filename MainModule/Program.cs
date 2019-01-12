@@ -2,19 +2,14 @@
 using RelevantFunction;
 using System.Diagnostics;
 
-namespace SingleThreadingVersion
+namespace Non_ParallelVersion
 {
     public class Program
     {
-        static int var4Swap;
+        private static int _var4Swap;
 
         static void Main(string[] args)
         {
-            //int[] array = Relevant.GenerateRandomIntergers(40_000_000, 0, 10000);
-            //GetMaxValueThenPlaceToEnd(array);
-            //Sort(array, 0, array.Length - 1);
-            //bool result = Relevant.VerifySequence(array);
-            //Console.WriteLine(result);
             Testing();
             Console.ReadKey();
         }
@@ -47,7 +42,7 @@ namespace SingleThreadingVersion
             Swap(array, maxEleIndex, array.Length - 1);
         }
 
-        static void Sort(int[] array, int lo, int hi)
+        private static void Sort(int[] array, int lo, int hi)
         {
             if (hi <= lo) return;
             int middleEleIndex = Partition(array, lo, hi);
@@ -55,7 +50,7 @@ namespace SingleThreadingVersion
             Sort(array, middleEleIndex + 1, hi);
         }
 
-        static int Partition(int[] array, int lo, int hi)
+        private static int Partition(int[] array, int lo, int hi)
         {
             int middleEle = array[lo];
             int i = lo;
@@ -72,11 +67,11 @@ namespace SingleThreadingVersion
             return j;
         }
 
-        static void Swap(int[] array, int e1, int e2)
+        private static void Swap(int[] array, int e1, int e2)
         {
-            var4Swap = array[e1];
+            _var4Swap = array[e1];
             array[e1] = array[e2];
-            array[e2] = var4Swap;
+            array[e2] = _var4Swap;
         }
 
     }
