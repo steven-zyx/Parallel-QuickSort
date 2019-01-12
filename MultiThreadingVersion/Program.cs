@@ -12,6 +12,7 @@ namespace MultiThreadingVersion
     {
         static int partitionCount = 0;
         static int endCount = 0;
+        static int NewThreadBasis;
 
         static void Main(string[] args)
         {
@@ -37,6 +38,7 @@ namespace MultiThreadingVersion
             sw.Start();
 
             GetMaxValueThenPlaceToEnd(array);
+            NewThreadBasis = array.Length / 256;
             Task mainTask = null;
             mainTask = new Task(() => Sort_Continuation(array, 0, array.Length - 1, mainTask));
             mainTask.Start();
@@ -105,22 +107,31 @@ namespace MultiThreadingVersion
 
             Interlocked.Increment(ref partitionCount);
             int middleEleIndex = Partition(array, lo, hi);
-            t.ContinueWith((task) => Sort_Continuation(array, lo, middleEleIndex - 1, task));
-            Sort_Continuation(array, middleEleIndex + 1, hi, t);
+
+            if (middleEleIndex - lo > NewThreadBasis)
+                t.ContinueWith((task) => Sort_Continuation(array, lo, middleEleIndex - 1, task));
+            else
+                Sort_Single(array, lo, middleEleIndex - 1);
+
+            if (hi - middleEleIndex > NewThreadBasis)
+                t.ContinueWith((task) => Sort_Continuation(array, middleEleIndex + 1, hi, task));
+            else
+                Sort_Single(array, middleEleIndex + 1, hi);
         }
 
-        static void Sort_Parallel(int[] array, int lo, int hi)
+        static void Sort_Single(int[] array, int lo, int hi)
         {
             if (hi <= lo)
             {
+                Interlocked.Increment(ref endCount);
                 return;
             }
 
+            Interlocked.Increment(ref partitionCount);
             int middleEleIndex = Partition(array, lo, hi);
 
-            Parallel.Invoke(
-                () => Sort_Parallel(array, lo, middleEleIndex - 1),
-                () => Sort_Parallel(array, middleEleIndex + 1, hi));
+            Sort_Single(array, lo, middleEleIndex - 1);
+            Sort_Single(array, middleEleIndex + 1, hi);
         }
 
         static int Partition(int[] array, int lo, int hi)
