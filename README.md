@@ -4,3 +4,6 @@ After my experiment, the parallel version saves approximately 64% of the time co
 Technically, I used continuation, and only assigned continuation if the subarrays have large enough length, which is 1/256 of the whole array. So it won't generate too much tasks for the TPL to schedule but retained a fine-grained control of the threads.<br/>
 There is a problem bordering me, the most antecedent task doesn't receive anything when all its continuations finish. I can't predict how much continuation would be assigned. To deal with this problem, I had to trace the progress of the process and assign a thread to check the progress. This not only complicated the algorithm but also occupied an available Thread, which leads to bad performance.<br/>
 I am looking forward to the solution as well as any improvement.
+
+Did some changes in branch iss53
+Finished job on branch iss53
