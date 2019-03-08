@@ -5,5 +5,4 @@ Technically, I used continuation, and only assigned continuation if the subarray
 There is a problem bordering me, the most antecedent task doesn't receive anything when all its continuations finish. I can't predict how much continuation would be assigned. To deal with this problem, I had to trace the progress of the process and assign a thread to check the progress. This not only complicated the algorithm but also occupied an available Thread, which leads to bad performance.<br/>
 I am looking forward to the solution as well as any improvement.
 
-here is the test
-2
+delete test 2 here.
